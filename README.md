@@ -1,4 +1,4 @@
-# Generar imagen docker desde los repositorios del proyecto MDS
+## Generar imagen docker desde los repositorios del proyecto MDS
 
 ## Crear imagen del frontend
 
@@ -10,6 +10,8 @@
 
 ## Utilizar imagen compilado con docker-compose
 
+Clonar el repositorio `git clone https://github.com/geneos/docker_convenios_mds.git`
+
 Ejecutar `docker-compose up` y detener con `Ctrl + c` cuando termine de generar la estructura de volumenes
 
 Aplicar la migracion en la base de datos `docker-compose run --rm backend ./manage.py migrate`
@@ -20,6 +22,6 @@ Ejecutar el docker con el comando `docker-compose up -d`
 
 Detener el docker con el comando `docker-compose down`
 
-## Ingresar al backend `127.0.0.1:8000/admin`
+Ingresar al backend `127.0.0.1:8000/admin`
 
-## Ingresar al frontend `127.0.0.1`
+Ingresar al frontend `127.0.0.1`
