@@ -24,6 +24,6 @@ Esta tarea elimina todos los datos en el disco y para volver a ejecutar se debe 
 
 ## 3. URL para ingresar al frontend / backend
 
-Ingresar al backend `127.0.0.1:8000/admin`
+Ingresar al backend `http://mds-backend.localhost/admin`
 
-Ingresar al frontend `127.0.0.1`
+Ingresar al frontend `http://mds.localhost/`

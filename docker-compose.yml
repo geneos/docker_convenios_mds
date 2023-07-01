@@ -1,5 +1,21 @@
 version: '3.7'
 services:
+    traefik:
+        image: traefik:v1.7.33-alpine
+        command:
+            - --api
+            - --docker
+            - --docker.domain=localhost
+            - --docker.exposedbydefault=false
+        labels:
+            - traefik.enable=true
+            - traefik.port=8080
+            - traefik.frontend.rule=Host:traefik.localhost
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        # para que funcione la solución *.localhost
+        network_mode: "host"
+        
     db:
         image: postgres:14
         environment:
@@ -36,6 +52,12 @@ services:
         volumes:
             - static_volume:/app/api/mds_convenios_obras/mds_convenios_obras/static
             - media_volume:/app/api/mds_convenios_obras/mds_convenios_obras/media
+        labels:
+            - traefik.enable=true
+            - traefik.frontend.port=8000
+            - traefik.frontend.rule=HostRegexp:mds-backend.localhost,{subdomain:[a-z0-9-_]+}.mds-backend.localhost
+            - traefik.backend.loadbalancer.stickiness=true
+            - traefik.backend.loadbalancer.method=drr
         ports:
             - "8000:8000"
         depends_on:
@@ -49,8 +71,12 @@ services:
         image: ferjavrec/mds-frontend:1.0
         volumes:
             - react_volume:/app/build
-        ports:
-            - "80:80"
+        labels:
+            - traefik.enable=true
+            - traefik.frontend.port=80
+            - traefik.frontend.rule=HostRegexp:mds.localhost,{subdomain:[a-z0-9-_]+}.mds.localhost
+            - traefik.backend.loadbalancer.stickiness=true
+            - traefik.backend.loadbalancer.method=drr
         networks:
             services-network:
               aliases:
