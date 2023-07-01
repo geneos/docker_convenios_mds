@@ -9,6 +9,7 @@ Clonar el repositorio `git clone https://github.com/geneos/docker_convenios_mds.
 Ejecutar `docker-compose up` y detener con `Ctrl + c` cuando termine de generar la estructura de volumenes
 
 Aplicar la migracion en la base de datos `docker-compose run --rm backend ./manage.py migrate`
+
 Crear un usuario `docker-compose run --rm backend ./manage.py createsuperuser`
 
 ## 2. Comandos para iniciar o detener el docker
