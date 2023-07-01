@@ -1,0 +1,68 @@
+version: '3.7'
+services:
+    db:
+        image: postgres:14
+        environment:
+            - POSTGRES_HOST=localhost
+            - POSTGRES_USER=django
+            - POSTGRES_PASSWORD=django
+            - POSTGRES_DB=mds
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        volumes:
+            - pg_data:/var/lib/postgresql/data/pgdata
+        expose:
+            - "5432"
+        networks:
+            services-network:
+              aliases:
+                - db
+
+    backend:
+        image: ferjavrec/mds-backend:1.0
+        environment:
+            SECRET_KEY: xfsdff9fd8sf8dsf9sf
+            DJANGO_SUPERUSER_USERNAME: admin
+            DJANGO_SUPERUSER_EMAIL: admin
+            DJANGO_SUPERUSER_PASSWORD: admin
+            DATABASE_HOST: db
+            DATABASE_NAME: mds
+            DATABASE_USER: django
+            DATABASE_PASS: django
+            PRUEBA: "True"
+            DEBUG: "True"
+            DRF_RECAPTCHA_SECRET_KEY: 6LeTTegkAAAAAMjb-jfzfi9ejAahNUSCf9U8E6JA
+            URL_FRONT: 127.0.0.1
+            NOMBRE_SITIO: Ministerio de desarrollo social
+        volumes:
+            - static_volume:/app/api/mds_convenios_obras/mds_convenios_obras/static
+            - media_volume:/app/api/mds_convenios_obras/mds_convenios_obras/media
+        ports:
+            - "8000:8000"
+        depends_on:
+            - db
+        networks:
+            services-network:
+              aliases:
+                - backend
+    
+    frontend:
+        image: ferjavrec/mds-frontend:1.0
+        volumes:
+            - react_volume:/app/build
+        ports:
+            - "80:80"
+        networks:
+            services-network:
+              aliases:
+                - frontend
+
+volumes:
+    pg_data:
+    static_volume:
+    media_volume:
+    react_volume:
+
+networks:
+  services-network:
+    name: services-network
+    driver: bridge
